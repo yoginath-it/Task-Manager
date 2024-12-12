@@ -1,41 +1,40 @@
-Task Management System - Project Report
+# Task Management System - Project Report
 
-Overview
+## **Overview**
 
 The Task Management System is a backend project developed using FastAPI and PostgreSQL. It allows users to register, log in, and manage tasks with features such as task categorization, priority levels, due dates, and user-specific filters. The system also implements token-based authentication to ensure secure user access.
 
-Features
+---
 
-User Management
+## **Features**
 
-User registration and login.
+1. **User Management**
 
-Password hashing using bcrypt.
+   - User registration and login.
+   - Password hashing using bcrypt.
+   - Token-based authentication using JSON Web Tokens (JWT).
 
-Token-based authentication using JSON Web Tokens (JWT).
+2. **Task Management**
 
-Task Management
+   - Create, update, delete, and retrieve tasks.
+   - Filters for tasks based on category, priority, and due date.
+   - Tasks are associated with specific users.
 
-Create, update, delete, and retrieve tasks.
+3. **Database Integration**
 
-Filters for tasks based on category, priority, and due date.
+   - Asynchronous interaction with PostgreSQL using SQLAlchemy.
+   - User and task data persistence.
 
-Tasks are associated with specific users.
+4. **Security**
 
-Database Integration
+   - Secure password storage with hashing.
+   - Token-based user authentication with expiration.
 
-Asynchronous interaction with PostgreSQL using SQLAlchemy.
+---
 
-User and task data persistence.
+## **Project Structure**
 
-Security
-
-Secure password storage with hashing.
-
-Token-based user authentication with expiration.
-
-Project Structure
-
+```
 app/
 |-- database.py      # Database configuration and session management
 |-- models.py        # SQLAlchemy models for User and Task
@@ -46,178 +45,163 @@ app/
 |-- utils/
     |-- auth.py      # Utility functions for hashing passwords and creating JWTs
 main.py              # Application entry point
+```
+
+---
+
+## **Database Models**
+
+### **User Model**
+
+- Fields:
+  - `id`: Primary key
+  - `username`: Unique username
+  - `hashed_password`: Securely stored password
+
+### **Task Model**
+
+- Fields:
+  - `id`: Primary key
+  - `title`: Task title
+  - `description`: Optional description
+  - `due_date`: Optional due date
+  - `priority`: Optional priority level
+  - `category`: Optional category
+  - `user_id`: Foreign key linking to User
 
-Database Models
+---
 
-User Model
+## **Authentication**
 
-Fields:
+### **Endpoints**
 
-id: Primary key
+1. **Register User**
 
-username: Unique username
+   - Endpoint: `POST /auth/register`
+   - Request Body:
+     ```json
+     {
+       "username": "testuser",
+       "password": "securepassword"
+     }
+     ```
 
-hashed_password: Securely stored password
+2. **Login User**
+
+   - Endpoint: `POST /auth/login`
+   - Request Body:
+     ```json
+     {
+       "username": "testuser",
+       "password": "securepassword"
+     }
+     ```
+   - Response:
+     ```json
+     {
+       "access_token": "your-access-token",
+       "token_type": "bearer"
+     }
+     ```
 
-Task Model
+### **Implementation**
 
-Fields:
+- Password hashing with bcrypt using Passlib.
+- Token generation using PyJWT.
 
-id: Primary key
+---
 
-title: Task title
+## **Task Management**
 
-description: Optional description
+### **Endpoints**
 
-due_date: Optional due date
+1. **Create Task**
 
-priority: Optional priority level
+   - Endpoint: `POST /tasks/`
+   - Authorization: Bearer Token
+   - Request Body:
+     ```json
+     {
+       "title": "Finish project",
+       "description": "Complete the backend for task manager",
+       "due_date": "2024-12-31T23:59:59",
+       "priority": 1,
+       "category": "Work"
+     }
+     ```
 
-category: Optional category
+2. **Get Tasks with Filters**
 
-user_id: Foreign key linking to User
+   - Endpoint: `GET /tasks/`
+   - Authorization: Bearer Token
+   - Query Parameters:
+     - `category`: Filter by category
+     - `priority`: Filter by priority
+     - `due_date`: Filter by due date
 
-Authentication
+3. **Update Task**
 
-Endpoints
+   - Endpoint: `PUT /tasks/{task_id}`
+   - Authorization: Bearer Token
+   - Request Body:
+     ```json
+     {
+       "title": "Updated title",
+       "description": "Updated description"
+     }
+     ```
 
-Register User
+4. **Delete Task**
 
-Endpoint: POST /auth/register
+   - Endpoint: `DELETE /tasks/{task_id}`
+   - Authorization: Bearer Token
 
-Request Body:
+---
 
-{
-  "username": "testuser",
-  "password": "securepassword"
-}
+## **Technologies Used**
 
-Login User
+1. **Backend Framework**: FastAPI
+2. **Database**: PostgreSQL
+3. **ORM**: SQLAlchemy (asynchronous support)
+4. **Authentication**: JWT
+5. **Password Hashing**: bcrypt (Passlib)
 
-Endpoint: POST /auth/login
+---
 
-Request Body:
+## **Setup and Execution**
 
-{
-  "username": "testuser",
-  "password": "securepassword"
-}
+### **Prerequisites**
 
-Response:
+- Python 3.13.0
+- PostgreSQL
 
-{
-  "access_token": "your-access-token",
-  "token_type": "bearer"
-}
+### **Steps to Run the Project**
 
-Implementation
+1. Clone the repository.
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Update `DATABASE_URL` in `database.py` with your PostgreSQL credentials.
+4. Run the application:
+   ```bash
+   u
+   ```
+5. uvicorn main\:app --reloadAccess the application at `http://localhost:8000`.
 
-Password hashing with bcrypt using Passlib.
+---
 
-Token generation using PyJWT.
+## **Future Enhancements**
 
-Task Management
+1. Add user roles (admin, standard user).
+2. Implement task reminders.
+3. Add support for file attachments in tasks.
+4. Enhance filtering with complex queries.
+5. Deploy the application to a cloud platform.
 
-Endpoints
+---
 
-Create Task
-
-Endpoint: POST /tasks/
-
-Authorization: Bearer Token
-
-Request Body:
-
-{
-  "title": "Finish project",
-  "description": "Complete the backend for task manager",
-  "due_date": "2024-12-31T23:59:59",
-  "priority": 1,
-  "category": "Work"
-}
-
-Get Tasks with Filters
-
-Endpoint: GET /tasks/
-
-Authorization: Bearer Token
-
-Query Parameters:
-
-category: Filter by category
-
-priority: Filter by priority
-
-due_date: Filter by due date
-
-Update Task
-
-Endpoint: PUT /tasks/{task_id}
-
-Authorization: Bearer Token
-
-Request Body:
-
-{
-  "title": "Updated title",
-  "description": "Updated description"
-}
-
-Delete Task
-
-Endpoint: DELETE /tasks/{task_id}
-
-Authorization: Bearer Token
-
-Technologies Used
-
-Backend Framework: FastAPI
-
-Database: PostgreSQL
-
-ORM: SQLAlchemy (asynchronous support)
-
-Authentication: JWT
-
-Password Hashing: bcrypt (Passlib)
-
-Setup and Execution
-
-Prerequisites
-
-Python 3.13.0
-
-PostgreSQL
-
-Steps to Run the Project
-
-Clone the repository.
-
-Install dependencies:
-
-pip install -r requirements.txt
-
-Update DATABASE_URL in database.py with your PostgreSQL credentials.
-
-Run the application:
-
-u
-
-uvicorn main:app --reloadAccess the application at http://localhost:8000.
-
-Future Enhancements
-
-Add user roles (admin, standard user).
-
-Implement task reminders.
-
-Add support for file attachments in tasks.
-
-Enhance filtering with complex queries.
-
-Deploy the application to a cloud platform.
-
-Conclusion
+## **Conclusion**
 
 The Task Management System provides a robust foundation for managing tasks with user authentication and authorization. Its modular architecture ensures scalability and maintainability, making it a valuable project for task management use cases.
 
