@@ -178,28 +178,15 @@ main.py              # Application entry point
 ### **Steps to Run the Project**
 
 1. Clone the repository.
-2. Install dependencies:
+2. Update `DATABASE_URL` in `database.py` with your PostgreSQL credentials.
+3. Run the application:
    ```bash
-   pip install -r requirements.txt
+    uvicorn main:app --reload
    ```
-3. Update `DATABASE_URL` in `database.py` with your PostgreSQL credentials.
-4. Run the application:
-   ```bash
-   u
-   ```
-5. uvicorn main\:app --reloadAccess the application at `http://localhost:8000`.
+4.Access the application at `http://localhost:8000`.
 
 ---
 
-## **Future Enhancements**
-
-1. Add user roles (admin, standard user).
-2. Implement task reminders.
-3. Add support for file attachments in tasks.
-4. Enhance filtering with complex queries.
-5. Deploy the application to a cloud platform.
-
----
 
 ## **Conclusion**
 
